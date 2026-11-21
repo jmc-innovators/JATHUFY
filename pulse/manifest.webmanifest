@@ -1,0 +1,19 @@
+{
+  "name": "JATHUFY \u2014 Your Sound. Your World.",
+  "short_name": "JATHUFY",
+  "description": "A premium music discovery experience by Jathush (JMC Innovator).",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#1ED760",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "jathufy-logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

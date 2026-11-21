@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#121212">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="jathufy-logo.png">
+<meta name="description" content="JATHUFY — Your Sound. Your World. A premium music discovery experience by Jathush (JMC Innovator).">
+<title>JATHUFY — Your Sound. Your World.</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%231ed760'/%3E%3Cpath d='M6 16h4l3-7 5 14 3-7h5' fill='none' stroke='%23000' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M12 3 3 10.5V21h6.5v-6h5v6H21V10.5z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-library" viewBox="0 0 24 24"><path d="M4 4h2.5v16H4zM9 4h2.5v16H9zM14.5 5.2l2.4-.7 3.6 14.3-2.4.7z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M11 4h2v7h7v2h-7v7h-2v-7H4v-2h7z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M6 5v14l10-7zM17 5h2.5v14H17z"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="M18 5v14L8 12zM4.5 5H7v14H4.5z"/></symbol>
+  <symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M3 7h3.5c5 0 5 10 10 10H21M3 17h3.5c1.8 0 3-1 4-2.3M13.5 9.3C14.5 8 15.2 7 17 7h4M18.5 4.5 21 7l-2.5 2.5M18.5 14.5 21 17l-2.5 2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-repeat" viewBox="0 0 24 24"><path d="M4 11V9a3 3 0 0 1 3-3h13M17 3l3 3-3 3M20 13v2a3 3 0 0 1-3 3H4M7 21l-3-3 3-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-repeat1" viewBox="0 0 24 24"><path d="M4 11V9a3 3 0 0 1 3-3h13M17 3l3 3-3 3M20 13v2a3 3 0 0 1-3 3H4M7 21l-3-3 3-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 10.5l1.6-.8v5.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-8-4.9-8-11A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 8 2.5c0 6.1-8 11-8 11z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-heart-fill" viewBox="0 0 24 24"><path d="M12 20.5s-8-4.9-8-11A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 8 2.5c0 6.1-8 11-8 11z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+  <symbol id="i-queue" viewBox="0 0 24 24"><path d="M3 6h14M3 11h14M3 16h7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 14v7l6-3.5z"/></symbol>
+  <symbol id="i-volume" viewBox="0 0 24 24"><path d="M4 9.5h3.5L13 5v14l-5.5-4.5H4z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-volume-low" viewBox="0 0 24 24"><path d="M4 9.5h3.5L13 5v14l-5.5-4.5H4z"/><path d="M16 9a4 4 0 0 1 0 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.5h3.5L13 5v14l-5.5-4.5H4z"/><path d="m16 9 5 6m0-6-5 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 5-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-fwd" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="m4 20 1-4L16.5 4.5l3 3L8 19zM14.5 6.5l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5.5l3.5 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l10-2v13" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/></symbol>
+  <symbol id="i-eq" viewBox="0 0 24 24"><rect x="4" y="10" width="3.5" height="10" rx="1"><animate attributeName="height" values="10;18;6;10" dur="0.9s" repeatCount="indefinite"/><animate attributeName="y" values="10;2;14;10" dur="0.9s" repeatCount="indefinite"/></rect><rect x="10.2" y="4" width="3.5" height="16" rx="1"><animate attributeName="height" values="16;6;18;16" dur="0.7s" repeatCount="indefinite"/><animate attributeName="y" values="4;14;2;4" dur="0.7s" repeatCount="indefinite"/></rect><rect x="16.5" y="8" width="3.5" height="12" rx="1"><animate attributeName="height" values="12;18;8;12" dur="1.1s" repeatCount="indefinite"/><animate attributeName="y" values="8;2;12;8" dur="1.1s" repeatCount="indefinite"/></rect></symbol>
+  <symbol id="i-logo" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="currentColor"/><path d="M6 16h4l3-7 5 14 3-7h5" fill="none" stroke="#000" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<a class="skip" href="#view">Skip to content</a>
+
+<div id="app">
+  <aside id="side" aria-label="Primary">
+    <nav class="panel nav-top" aria-label="Main">
+      <a class="brand" href="#/home" aria-label="JATHUFY home"><img class="brand-mark" src="jathufy-logo.png" alt=""><span class="brand-stack"><span class="brand-name">JATHUFY</span><span class="brand-tagline">Your Sound. Your World.</span></span></a>
+      <a class="nav-link" data-route="home" href="#/home"><svg class="i"><use href="#i-home"/></svg><span>Home</span></a>
+      <a class="nav-link" data-route="search" href="#/search"><svg class="i"><use href="#i-search"/></svg><span>Search</span></a>
+    </nav>
+    <section class="panel lib" aria-label="Your Library">
+      <div class="lib-head">
+        <a class="lib-title" href="#/library"><svg class="i"><use href="#i-library"/></svg><span>Your Library</span></a>
+        <button class="icon-btn" data-act="create-playlist" aria-label="Create playlist" title="Create playlist"><svg class="i"><use href="#i-plus"/></svg></button>
+      </div>
+      <div class="chips" id="lib-chips" role="group" aria-label="Filter library"></div>
+      <div class="lib-tools">
+        <button class="sort-btn" data-act="sort-menu" aria-haspopup="menu"><span id="sort-label">Recents</span><svg class="i"><use href="#i-down"/></svg></button>
+      </div>
+      <div class="lib-list" id="lib-list"></div>
+    </section>
+  </aside>
+
+  <main id="main" class="panel" tabindex="-1">
+    <header class="topbar" id="topbar">
+      <div class="tb-left">
+        <button class="round-btn" data-act="hist-back" aria-label="Go back"><svg class="i"><use href="#i-back"/></svg></button>
+        <button class="round-btn" data-act="hist-fwd" aria-label="Go forward"><svg class="i"><use href="#i-fwd"/></svg></button>
+        <label class="searchbox" id="searchbox"><svg class="i"><use href="#i-search"/></svg>
+          <input id="q" type="search" placeholder="What do you want to play?" autocomplete="off" aria-label="Search">
+        </label>
+      </div>
+      <div class="tb-right">
+        <button class="avatar" id="avatar-btn" data-act="profile-menu" aria-label="Account menu" aria-haspopup="menu">J</button>
+      </div>
+    </header>
+    <div id="view" aria-live="polite"></div>
+  </main>
+
+  <footer id="player" aria-label="Player">
+    <div class="p-left">
+      <img id="p-art" class="p-art" alt="" width="56" height="56">
+      <div class="p-meta">
+        <div class="p-title" id="p-title">Nothing playing</div>
+        <a class="p-artist" id="p-artist" href="#/home">Pick a song to start</a>
+      </div>
+      <button class="icon-btn like-btn" data-act="like-current" aria-label="Like" aria-pressed="false"><svg class="i"><use href="#i-heart"/></svg></button>
+    </div>
+    <div class="p-center">
+      <div class="controls">
+        <button class="icon-btn" data-act="shuffle" aria-label="Shuffle" aria-pressed="false"><svg class="i"><use href="#i-shuffle"/></svg></button>
+        <button class="icon-btn lg" data-act="prev" aria-label="Previous"><svg class="i"><use href="#i-prev"/></svg></button>
+        <button class="play-btn" data-act="toggle" aria-label="Play"><svg class="i"><use href="#i-play"/></svg></button>
+        <button class="icon-btn lg" data-act="next" aria-label="Next"><svg class="i"><use href="#i-next"/></svg></button>
+        <button class="icon-btn" data-act="repeat" aria-label="Repeat: off"><svg class="i"><use href="#i-repeat"/></svg></button>
+      </div>
+      <div class="seek-row">
+        <span class="t-cur">0:00</span>
+        <input class="seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek">
+        <span class="t-dur">0:00</span>
+      </div>
+    </div>
+    <div class="p-right">
+      <button class="icon-btn" data-act="goto-queue" aria-label="Queue" title="Queue"><svg class="i"><use href="#i-queue"/></svg></button>
+      <button class="icon-btn" data-act="mute" aria-label="Mute"><svg class="i"><use href="#i-volume"/></svg></button>
+      <input class="vol" type="range" min="0" max="100" value="70" step="1" aria-label="Volume">
+    </div>
+    <div class="mini-progress" aria-hidden="true"><i id="mini-bar"></i></div>
+  </footer>
+
+  <nav id="tabbar" aria-label="Mobile">
+    <a data-route="home" href="#/home"><svg class="i"><use href="#i-home"/></svg><span>Home</span></a>
+    <a data-route="search" href="#/search"><svg class="i"><use href="#i-search"/></svg><span>Search</span></a>
+    <a data-route="library" href="#/library"><svg class="i"><use href="#i-library"/></svg><span>Library</span></a>
+    <a data-route="queue" href="#/queue"><svg class="i"><use href="#i-queue"/></svg><span>Queue</span></a>
+  </nav>
+</div>
+
+<section id="sheet" class="sheet" aria-hidden="true" aria-label="Now playing">
+  <div class="sheet-top">
+    <button class="icon-btn" data-act="close-sheet" aria-label="Close now playing"><svg class="i"><use href="#i-down"/></svg></button>
+    <span>Now playing</span>
+    <button class="icon-btn" data-act="sheet-more" aria-label="More options"><svg class="i"><use href="#i-more"/></svg></button>
+  </div>
+  <img id="s-art" class="s-art" alt="" width="320" height="320">
+  <div class="s-meta">
+    <div><div class="s-title" id="s-title"></div><a class="s-artist" id="s-artist" href="#/home"></a></div>
+    <button class="icon-btn like-btn" data-act="like-current" aria-label="Like" aria-pressed="false"><svg class="i"><use href="#i-heart"/></svg></button>
+  </div>
+  <div class="s-seek">
+    <input class="seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek">
+    <div class="s-times"><span class="t-cur">0:00</span><span class="t-dur">0:00</span></div>
+  </div>
+  <div class="controls s-controls">
+    <button class="icon-btn" data-act="shuffle" aria-label="Shuffle" aria-pressed="false"><svg class="i"><use href="#i-shuffle"/></svg></button>
+    <button class="icon-btn lg" data-act="prev" aria-label="Previous"><svg class="i"><use href="#i-prev"/></svg></button>
+    <button class="play-btn big" data-act="toggle" aria-label="Play"><svg class="i"><use href="#i-play"/></svg></button>
+    <button class="icon-btn lg" data-act="next" aria-label="Next"><svg class="i"><use href="#i-next"/></svg></button>
+    <button class="icon-btn" data-act="repeat" aria-label="Repeat: off"><svg class="i"><use href="#i-repeat"/></svg></button>
+  </div>
+  <div class="s-foot">
+    <button class="icon-btn" data-act="mute" aria-label="Mute"><svg class="i"><use href="#i-volume"/></svg></button>
+    <input class="vol" type="range" min="0" max="100" value="70" step="1" aria-label="Volume">
+    <button class="icon-btn" data-act="goto-queue" aria-label="Queue"><svg class="i"><use href="#i-queue"/></svg></button>
+  </div>
+</section>
+
+<div id="menu" class="menu" role="menu" hidden></div>
+<div id="modal" class="modal" hidden></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
