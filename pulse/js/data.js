@@ -1,16 +1,16 @@
 /* JATHUFY local demo catalogue plus a curated real-song discovery catalogue. */
 window.PULSE_DATA = {
   artists: [
-    { id: 'ar1', name: 'Neon Harbor', hue: 285, hue2: 215, shape: 'sun', bio: 'Retro-futurist synth duo making late-night driving music.' },
-    { id: 'ar2', name: 'Velvet Moon', hue: 230, hue2: 280, shape: 'rings', bio: 'Slow, dreamy soundscapes for quiet evenings.' },
-    { id: 'ar3', name: 'Sunday Atlas', hue: 28, hue2: 350, shape: 'tri', bio: 'Warm indie arrangements that sound like golden afternoons.' },
-    { id: 'ar4', name: 'Glass Arcade', hue: 160, hue2: 200, shape: 'grid', bio: 'Bright, bouncy electronic pop built from chiptune parts.' }
+    { id: 'ar1', name: 'Neon Harbor', hue: 285, hue2: 215, shape: 'sun', artworkUrl: 'images/album-night-signals.jpg', bio: 'Retro-futurist synth duo making late-night driving music.' },
+    { id: 'ar2', name: 'Velvet Moon', hue: 230, hue2: 280, shape: 'rings', artworkUrl: 'images/album-bloom.jpg', bio: 'Slow, dreamy soundscapes for quiet evenings.' },
+    { id: 'ar3', name: 'Sunday Atlas', hue: 28, hue2: 350, shape: 'tri', artworkUrl: 'images/album-golden-hours.jpg', bio: 'Warm indie arrangements that sound like golden afternoons.' },
+    { id: 'ar4', name: 'Glass Arcade', hue: 160, hue2: 200, shape: 'grid', artworkUrl: 'images/album-paper-skies.jpg', bio: 'Bright, bouncy electronic pop built from chiptune parts.' }
   ],
   albums: [
-    { id: 'al1', title: 'Night Signals', artist: 'ar1', year: 2024, hue: 285, hue2: 215, shape: 'sun' },
-    { id: 'al2', title: 'Bloom', artist: 'ar2', year: 2023, hue: 230, hue2: 280, shape: 'rings' },
-    { id: 'al3', title: 'Golden Hours', artist: 'ar3', year: 2025, hue: 28, hue2: 350, shape: 'tri' },
-    { id: 'al4', title: 'Paper Skies', artist: 'ar4', year: 2022, hue: 160, hue2: 200, shape: 'grid' }
+    { id: 'al1', title: 'Night Signals', artist: 'ar1', year: 2024, hue: 285, hue2: 215, shape: 'sun', artworkUrl: 'images/album-night-signals.jpg' },
+    { id: 'al2', title: 'Bloom', artist: 'ar2', year: 2023, hue: 230, hue2: 280, shape: 'rings', artworkUrl: 'images/album-bloom.jpg' },
+    { id: 'al3', title: 'Golden Hours', artist: 'ar3', year: 2025, hue: 28, hue2: 350, shape: 'tri', artworkUrl: 'images/album-golden-hours.jpg' },
+    { id: 'al4', title: 'Paper Skies', artist: 'ar4', year: 2022, hue: 160, hue2: 200, shape: 'grid', artworkUrl: 'images/album-paper-skies.jpg' }
   ],
   tracks: [
     { id: 't1', title: 'Neon Drive', artist: 'ar1', album: 'al1', file: 'audio/neon-drive.wav', dur: 30, genres: ['Synthwave'] },
@@ -23,13 +23,13 @@ window.PULSE_DATA = {
     { id: 't8', title: 'Static Dreams', artist: 'ar4', album: 'al4', file: 'audio/static-dreams.wav', dur: 30, genres: ['Electronic'] }
   ],
   seedPlaylists: [
-    { id: 'pl1', name: 'Daily Mix 1', desc: 'A mix picked for you.', tracks: ['t1', 't3', 't5', 't7'], seed: true },
-    { id: 'pl2', name: 'Chill Vibes', desc: 'Slow down and breathe.', tracks: ['t2', 't5', 't7', 't3'], seed: true },
-    { id: 'pl3', name: 'Night Drive', desc: 'Neon lights and empty roads.', tracks: ['t1', 't6', 't8', 't4'], seed: true },
-    { id: 'pl4', name: 'Focus Flow', desc: 'Steady beats for deep work.', tracks: ['t5', 't7', 't2', 't8'], seed: true }
+    { id: 'pl1', name: 'Daily Mix 1', desc: 'Neon Harbor, Sunday Atlas, Velvet Moon and more', tracks: ['t1', 't3', 't5', 't7'], seed: true },
+    { id: 'pl2', name: 'Chill Vibes', desc: 'Slow down and breathe with ambient coastal tracks.', tracks: ['t2', 't5', 't7', 't3'], seed: true },
+    { id: 'pl3', name: 'Night Drive', desc: 'Midnight highways, analog synth and city lights.', tracks: ['t1', 't6', 't8', 't4'], seed: true },
+    { id: 'pl4', name: 'Focus Flow', desc: 'Steady instrumental beats for deep work.', tracks: ['t5', 't7', 't2', 't8'], seed: true }
   ],
   genres: [
-    { name: 'Synthwave', hue: 290 }, { name: 'Chill', hue: 200 }, { name: 'Lo-fi', hue: 250 },
+    { name: 'Tamil', hue: 145 }, { name: 'Synthwave', hue: 290 }, { name: 'Chill', hue: 200 }, { name: 'Lo-fi', hue: 250 },
     { name: 'Indie', hue: 25 }, { name: 'Electronic', hue: 165 }, { name: 'Focus', hue: 330 }, { name: 'Pop', hue: 350 }
   ]
 };
