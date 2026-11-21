@@ -1,4 +1,4 @@
-const CACHE = 'jathufy-shell-v6';
+const CACHE = 'jathufy-shell-v7';
 const CORE = [
   '/',
   '/index.html',
@@ -45,7 +45,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const req = event.request;
   const url = new URL(req.url);
-  if (req.method !== 'GET' || url.origin !== self.location.origin || url.pathname.startsWith('/api/')) return;
+  if (req.method !== 'GET' || url.origin !== self.location.origin || url.pathname.startsWith('/api/') || url.pathname === '/health') return;
   event.respondWith(
     caches.match(req).then(cached => cached || fetch(req).then(response => {
       if (response.ok && (req.destination === 'script' || req.destination === 'style' || req.destination === 'image' || req.mode === 'navigate')) {
@@ -53,6 +53,9 @@ self.addEventListener('fetch', event => {
         caches.open(CACHE).then(cache => cache.put(req, copy));
       }
       return response;
-    }).catch(() => caches.match('/index.html')))
+    }).catch(() => {
+      if (req.mode === 'navigate') return caches.match('/index.html');
+      return new Response('', { status: 503, statusText: 'Offline' });
+    }))
   );
 });

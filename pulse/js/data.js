@@ -1,26 +1,26 @@
 /* JATHUFY local demo catalogue plus a curated real-song discovery catalogue. */
 window.PULSE_DATA = {
   artists: [
-    { id: 'ar1', name: 'Neon Harbor', hue: 285, hue2: 215, shape: 'sun', artworkUrl: 'images/album-night-signals.jpg', bio: 'Retro-futurist synth duo making late-night driving music.' },
-    { id: 'ar2', name: 'Velvet Moon', hue: 230, hue2: 280, shape: 'rings', artworkUrl: 'images/album-bloom.jpg', bio: 'Slow, dreamy soundscapes for quiet evenings.' },
-    { id: 'ar3', name: 'Sunday Atlas', hue: 28, hue2: 350, shape: 'tri', artworkUrl: 'images/album-golden-hours.jpg', bio: 'Warm indie arrangements that sound like golden afternoons.' },
-    { id: 'ar4', name: 'Glass Arcade', hue: 160, hue2: 200, shape: 'grid', artworkUrl: 'images/album-paper-skies.jpg', bio: 'Bright, bouncy electronic pop built from chiptune parts.' }
+    { id: 'ar1', name: 'Neon Harbor', hue: 285, hue2: 215, shape: 'sun', artworkUrl: '/images/album-night-signals.jpg', bio: 'Retro-futurist synth duo making late-night driving music.' },
+    { id: 'ar2', name: 'Velvet Moon', hue: 230, hue2: 280, shape: 'rings', artworkUrl: '/images/album-bloom.jpg', bio: 'Slow, dreamy soundscapes for quiet evenings.' },
+    { id: 'ar3', name: 'Sunday Atlas', hue: 28, hue2: 350, shape: 'tri', artworkUrl: '/images/album-golden-hours.jpg', bio: 'Warm indie arrangements that sound like golden afternoons.' },
+    { id: 'ar4', name: 'Glass Arcade', hue: 160, hue2: 200, shape: 'grid', artworkUrl: '/images/album-paper-skies.jpg', bio: 'Bright, bouncy electronic pop built from chiptune parts.' }
   ],
   albums: [
-    { id: 'al1', title: 'Night Signals', artist: 'ar1', year: 2024, hue: 285, hue2: 215, shape: 'sun', artworkUrl: 'images/album-night-signals.jpg' },
-    { id: 'al2', title: 'Bloom', artist: 'ar2', year: 2023, hue: 230, hue2: 280, shape: 'rings', artworkUrl: 'images/album-bloom.jpg' },
-    { id: 'al3', title: 'Golden Hours', artist: 'ar3', year: 2025, hue: 28, hue2: 350, shape: 'tri', artworkUrl: 'images/album-golden-hours.jpg' },
-    { id: 'al4', title: 'Paper Skies', artist: 'ar4', year: 2022, hue: 160, hue2: 200, shape: 'grid', artworkUrl: 'images/album-paper-skies.jpg' }
+    { id: 'al1', title: 'Night Signals', artist: 'ar1', year: 2024, hue: 285, hue2: 215, shape: 'sun', artworkUrl: '/images/album-night-signals.jpg' },
+    { id: 'al2', title: 'Bloom', artist: 'ar2', year: 2023, hue: 230, hue2: 280, shape: 'rings', artworkUrl: '/images/album-bloom.jpg' },
+    { id: 'al3', title: 'Golden Hours', artist: 'ar3', year: 2025, hue: 28, hue2: 350, shape: 'tri', artworkUrl: '/images/album-golden-hours.jpg' },
+    { id: 'al4', title: 'Paper Skies', artist: 'ar4', year: 2022, hue: 160, hue2: 200, shape: 'grid', artworkUrl: '/images/album-paper-skies.jpg' }
   ],
   tracks: [
-    { id: 't1', title: 'Neon Drive', artist: 'ar1', album: 'al1', file: 'audio/neon-drive.wav', dur: 30, genres: ['Synthwave'] },
-    { id: 't2', title: 'Midnight Bloom', artist: 'ar2', album: 'al2', file: 'audio/midnight-bloom.wav', dur: 30, genres: ['Chill', 'Lo-fi'] },
-    { id: 't3', title: 'Golden Hour', artist: 'ar3', album: 'al3', file: 'audio/golden-hour.wav', dur: 30, genres: ['Indie', 'Chill'] },
-    { id: 't4', title: 'Paper Planes', artist: 'ar4', album: 'al4', file: 'audio/paper-planes.wav', dur: 30, genres: ['Electronic', 'Pop'] },
-    { id: 't5', title: 'Slow Tide', artist: 'ar2', album: 'al2', file: 'audio/slow-tide.wav', dur: 30, genres: ['Chill', 'Focus'] },
-    { id: 't6', title: 'City Lights', artist: 'ar1', album: 'al1', file: 'audio/city-lights.wav', dur: 30, genres: ['Synthwave', 'Electronic'] },
-    { id: 't7', title: 'Lantern Hills', artist: 'ar3', album: 'al3', file: 'audio/lantern-hills.wav', dur: 30, genres: ['Indie', 'Focus'] },
-    { id: 't8', title: 'Static Dreams', artist: 'ar4', album: 'al4', file: 'audio/static-dreams.wav', dur: 30, genres: ['Electronic'] }
+    { id: 't1', title: 'Neon Drive', artist: 'ar1', album: 'al1', file: '/audio/neon-drive.wav', dur: 30, genres: ['Synthwave'] },
+    { id: 't2', title: 'Midnight Bloom', artist: 'ar2', album: 'al2', file: '/audio/midnight-bloom.wav', dur: 30, genres: ['Chill', 'Lo-fi'] },
+    { id: 't3', title: 'Golden Hour', artist: 'ar3', album: 'al3', file: '/audio/golden-hour.wav', dur: 30, genres: ['Indie', 'Chill'] },
+    { id: 't4', title: 'Paper Planes', artist: 'ar4', album: 'al4', file: '/audio/paper-planes.wav', dur: 30, genres: ['Electronic', 'Pop'] },
+    { id: 't5', title: 'Slow Tide', artist: 'ar2', album: 'al2', file: '/audio/slow-tide.wav', dur: 30, genres: ['Chill', 'Focus'] },
+    { id: 't6', title: 'City Lights', artist: 'ar1', album: 'al1', file: '/audio/city-lights.wav', dur: 30, genres: ['Synthwave', 'Electronic'] },
+    { id: 't7', title: 'Lantern Hills', artist: 'ar3', album: 'al3', file: '/audio/lantern-hills.wav', dur: 30, genres: ['Indie', 'Focus'] },
+    { id: 't8', title: 'Static Dreams', artist: 'ar4', album: 'al4', file: '/audio/static-dreams.wav', dur: 30, genres: ['Electronic'] }
   ],
   seedPlaylists: [
     { id: 'pl1', name: 'Daily Mix 1', desc: 'Neon Harbor, Sunday Atlas, Velvet Moon and more', tracks: ['t1', 't3', 't5', 't7'], seed: true },

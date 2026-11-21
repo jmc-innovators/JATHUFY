@@ -190,6 +190,14 @@ function sendIndexHtml(req, res) {
   res.send(html);
 }
 
+app.get('/health', (_req, res) => {
+  res.json({ ok: true, status: 'healthy', tamilCached: tamilCache.tracks.length });
+});
+
+app.use('/api/*', (_req, res) => {
+  res.status(404).json({ error: 'API route not found' });
+});
+
 app.get(['/', '/index.html'], sendIndexHtml);
 
 app.get(['/manifest.webmanifest', '/site.webmanifest'], (_req, res) => {
@@ -197,7 +205,7 @@ app.get(['/manifest.webmanifest', '/site.webmanifest'], (_req, res) => {
   res.sendFile(path.join(publicDir, 'manifest.webmanifest'));
 });
 
-app.get('/favicon.svg', (_req, res) => {
+app.get(['/favicon.svg', '/icon.svg'], (_req, res) => {
   res.type('image/svg+xml');
   res.sendFile(path.join(publicAssetsDir, 'favicon_97cfe0e1.svg'));
 });
@@ -222,6 +230,11 @@ app.get('/web-app-manifest-512x512.png', (_req, res) => {
   res.sendFile(path.join(publicAssetsDir, 'web-app-manifest-512x512_c1671e3a.png'));
 });
 
+app.get('/jathufy-logo.png', (_req, res) => {
+  res.type('image/png');
+  res.sendFile(path.join(publicAssetsDir, 'jathufy-logo_fe498894.png'));
+});
+
 app.get('/og-image.png', (_req, res) => {
   res.type('image/png');
   res.sendFile(path.join(publicAssetsDir, 'file_0000000019788211b937aaff901ce977_2b6a3659.png'));
@@ -237,7 +250,14 @@ app.use(express.static(publicDir, {
   }
 }));
 
-app.get('*', sendIndexHtml);
+const STATIC_EXT = /\.(?:js|mjs|css|png|jpe?g|gif|webp|svg|ico|wav|mp3|m4a|ogg|aac|flac|webm|json|webmanifest|map|woff2?|ttf)$/i;
+
+app.get('*', (req, res) => {
+  if (STATIC_EXT.test(req.path)) {
+    return res.status(404).type('text/plain').send('Not found');
+  }
+  return sendIndexHtml(req, res);
+});
 
 app.listen(PORT, HOST, () => {
   console.log(`JATHUFY server listening on http://${HOST}:${PORT}`);

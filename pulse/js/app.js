@@ -64,7 +64,7 @@ const allPlaylists = () => {
       tracks: uploadedTrackIds.slice(),
       seed: true,
       uploaded: true,
-      cover: 'images/cover-liked-songs.jpg'
+      cover: '/images/cover-liked-songs.jpg'
     });
   }
   return [...list, ...S.playlists];
@@ -160,12 +160,12 @@ function registerUploadedRecord(rec) {
   const aid = 'up_ar_' + hash(rec.artist).toString(36);
   if (!AR[aid]) {
     const hue = hash(rec.artist) % 360;
-    AR[aid] = { id: aid, name: rec.artist, hue, hue2: (hue + 55) % 360, shape: 'rings', artworkUrl: 'images/cover-liked-songs.jpg', bio: 'Uploaded audio artist in your personal library.' };
+    AR[aid] = { id: aid, name: rec.artist, hue, hue2: (hue + 55) % 360, shape: 'rings', artworkUrl: '/images/cover-liked-songs.jpg', bio: 'Uploaded audio artist in your personal library.' };
     D.artists.push(AR[aid]);
   }
   const alid = 'up_al_local';
   if (!AL[alid]) {
-    AL[alid] = { id: alid, title: 'Local Uploads', artist: aid, year: 2026, hue: 150, hue2: 200, shape: 'grid', artworkUrl: 'images/cover-liked-songs.jpg' };
+    AL[alid] = { id: alid, title: 'Local Uploads', artist: aid, year: 2026, hue: 150, hue2: 200, shape: 'grid', artworkUrl: '/images/cover-liked-songs.jpg' };
     D.albums.push(AL[alid]);
   }
   const fileUrl = rec.blob ? URL.createObjectURL(rec.blob) : rec.file;
@@ -177,8 +177,8 @@ function registerUploadedRecord(rec) {
     file: fileUrl,
     dur: rec.dur || 30,
     genres: ['Uploaded'],
-    artworkUrl: 'images/cover-liked-songs.jpg',
-    artworkLarge: 'images/cover-liked-songs.jpg',
+    artworkUrl: '/images/cover-liked-songs.jpg',
+    artworkLarge: '/images/cover-liked-songs.jpg',
     uploaded: true
   };
   TR[track.id] = track;
@@ -197,6 +197,7 @@ async function loadUploadedTracks() {
     records.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
     records.forEach(registerUploadedRecord);
     if (records.length) {
+      restorePendingQueueTrack();
       renderLibrary();
       renderView(false);
     }
@@ -232,7 +233,30 @@ async function handleAudioUpload(files) {
   renderView(true);
 }
 async function deleteUploadedTrack(id) {
+  const existing = TR[id];
+  const wasPlaying = cur()?.id === id;
+  if (existing && typeof existing.file === 'string' && existing.file.startsWith('blob:')) {
+    try { URL.revokeObjectURL(existing.file); } catch {}
+  }
   uploadedTrackIds = uploadedTrackIds.filter(x => x !== id);
+  delete TR[id];
+  D.tracks = D.tracks.filter(x => x.id !== id);
+  S.liked = S.liked.filter(x => x !== id);
+  S.recent = S.recent.filter(x => x !== id);
+  const removedIdx = [];
+  S.queue = S.queue.filter((x, idx) => {
+    if (x === id) { removedIdx.push(idx); return false; }
+    return true;
+  });
+  for (const idx of removedIdx) {
+    if (idx < S.qi) S.qi--;
+  }
+  if (S.qi >= S.queue.length) S.qi = S.queue.length - 1;
+  if (wasPlaying) {
+    audio.pause();
+    audio.removeAttribute('src');
+    audio.load();
+  }
   try {
     const db = await openUploadDb();
     await new Promise(resolve => {
@@ -242,6 +266,8 @@ async function deleteUploadedTrack(id) {
       tx.onerror = resolve;
     });
   } catch {}
+  save();
+  renderPlayer();
   renderLibrary();
   renderView(false);
   toast('Removed uploaded song');
@@ -321,7 +347,18 @@ const audio = new Audio();
 audio.preload = 'auto';
 audio.volume = S.volume;
 let seeking = false;
+let consecutiveErrors = 0;
 const cur = () => (S.qi >= 0 ? TR[S.queue[S.qi]] : null);
+
+function restorePendingQueueTrack() {
+  const t = cur();
+  if (t && !t.external && !audio.src) {
+    audio.src = t.file || t.previewUrl || '';
+    renderPlayer();
+    markPlaying();
+    updateMedia();
+  }
+}
 
 function loadCurrent(autoplay) {
   const t = cur();
@@ -358,12 +395,21 @@ function loadCurrent(autoplay) {
   if (route().name === 'queue' || route().name === 'recent') renderView(false);
 }
 function trackError() {
-  toast("Couldn't play this track. Skipping…");
-  if (S.queue.length > 1) setTimeout(() => next(true), 600);
+  consecutiveErrors++;
+  if (S.queue.length > 1 && consecutiveErrors < Math.min(S.queue.length, 5)) {
+    toast("Couldn't play this track. Skipping…");
+    setTimeout(() => next(true), 600);
+  } else {
+    audio.pause();
+    renderPlayer();
+    toast("Couldn't play audio right now.");
+  }
 }
+audio.addEventListener('playing', () => { consecutiveErrors = 0; });
 audio.addEventListener('error', () => { if (audio.src) trackError(); });
 function playList(ids, i = 0, ctxLabel = '') {
   if (!ids.length) return;
+  consecutiveErrors = 0;
   if (ctxLabel) currentContextName = ctxLabel;
   S.queue = ids.slice();
   S.qi = i;
@@ -578,11 +624,15 @@ function updateMedia() {
   if (!('mediaSession' in navigator) || !t) return;
   try {
     const artSrc = trackArt(t, true);
+    let resolvedArt = '';
+    if (artSrc && !artSrc.startsWith('data:')) {
+      try { resolvedArt = new URL(artSrc, location.href).href; } catch {}
+    }
     navigator.mediaSession.metadata = new MediaMetadata({
       title: t.title,
       artist: AR[t.artist]?.name || 'Artist',
       album: AL[t.album]?.title || '',
-      artwork: artSrc.startsWith('http') ? [{ src: artSrc, sizes: '600x600', type: 'image/jpeg' }] : []
+      artwork: resolvedArt ? [{ src: resolvedArt, sizes: '600x600', type: 'image/jpeg' }] : []
     });
     navigator.mediaSession.setActionHandler('play', () => toggle());
     navigator.mediaSession.setActionHandler('pause', () => toggle());
@@ -721,7 +771,7 @@ function vHome() {
   const pls = allPlaylists();
   const tamilPl = getPl('tamil_2026_top100');
   const tiles = [
-    { href: '#/liked', title: 'Liked Songs', src: 'images/cover-liked-songs.jpg', kind: 'playlist', id: 'liked' },
+    { href: '#/liked', title: 'Liked Songs', src: '/images/cover-liked-songs.jpg', kind: 'playlist', id: 'liked' },
     ...(tamilPl ? [{ href: '#/playlist/' + tamilPl.id, title: 'Tamil Hits 2026 • Top 100', src: playlistArt(tamilPl), kind: 'playlist', id: tamilPl.id }] : []),
     ...pls.filter(p => p.id !== 'tamil_2026_top100').slice(0, 4).map(p => ({ href: '#/playlist/' + p.id, title: p.name, src: playlistArt(p), kind: 'playlist', id: p.id })),
     ...D.albums.slice(0, 3).map(a => ({ href: '#/album/' + a.id, title: a.title, src: albumArt(a), kind: 'album', id: a.id }))
@@ -768,11 +818,13 @@ function vHome() {
   if (S.homeFilter === 'all' || S.homeFilter === 'playlists') {
     h += shelf('Made for you', pls.map(p => card('playlist', p)).join(''));
   }
+  const featuredAlbums = [...D.albums.filter(a => a.artworkUrl), ...D.albums.filter(a => !a.artworkUrl)];
+  const featuredArtists = [...D.artists.filter(a => a.artworkUrl), ...D.artists.filter(a => !a.artworkUrl)];
   if (S.homeFilter === 'all' || S.homeFilter === 'albums') {
-    h += shelf('Popular albums', D.albums.slice(0, 18).map(a => card('album', a)).join(''));
+    h += shelf('Popular albums', featuredAlbums.slice(0, 18).map(a => card('album', a)).join(''));
   }
   if (S.homeFilter === 'all') {
-    h += shelf('Popular artists', D.artists.slice(0, 18).map(a => card('artist', a)).join(''));
+    h += shelf('Popular artists', featuredArtists.slice(0, 18).map(a => card('artist', a)).join(''));
   }
   return h + `<footer class="foot"><span>JATHUFY · Your Sound. Your World.</span><span>Tamil 2026 previews & local audio player</span></footer></div>`;
 }
@@ -807,7 +859,7 @@ function vSearch(q) {
 
 function libEntries() {
   let e = [];
-  if (['all', 'playlists'].includes(S.libFilter)) e.push({ kind: 'playlist', id: 'liked', title: 'Liked Songs', sub: `Playlist · ${plural(S.liked.length, 'song')}`, src: 'images/cover-liked-songs.jpg', pin: true });
+  if (['all', 'playlists'].includes(S.libFilter)) e.push({ kind: 'playlist', id: 'liked', title: 'Liked Songs', sub: `Playlist · ${plural(S.liked.length, 'song')}`, src: '/images/cover-liked-songs.jpg', pin: true });
   if (['all', 'playlists'].includes(S.libFilter)) e.push(...allPlaylists().map(p => ({ kind: 'playlist', id: p.id, title: p.name, sub: `Playlist · ${p.seed ? 'JATHUFY' : S.name} · ${plural(p.tracks.length, 'song')}`, src: playlistArt(p) })));
   if (['all', 'albums'].includes(S.libFilter)) e.push(...S.savedAlbums.filter(id => AL[id]).map(id => ({ kind: 'album', id, title: AL[id].title, sub: `Album · ${AR[AL[id].artist]?.name || ''}`, src: albumArt(AL[id]) })));
   if (['all', 'artists'].includes(S.libFilter)) e.push(...S.followed.filter(id => AR[id]).map(id => ({ kind: 'artist', id, title: AR[id].name, sub: 'Artist', src: artistArt(AR[id]), round: true })));
@@ -836,12 +888,12 @@ function hero({ type, title, sub, src, h, round, id }) {
   return `<div class="hero"><div class="hero-art${round ? ' rnd' : ''}">${img(src, '', 232, id || title, title)}</div><div class="hero-text"><span class="type">${type}</span><h1>${esc(title)}</h1><div class="hero-sub">${sub}</div></div></div>`;
 }
 function vPlaylist(id) {
-  const liked = id === 'liked', p = liked ? { id, name: 'Liked Songs', tracks: S.liked, cover: 'images/cover-liked-songs.jpg' } : getPl(id);
+  const liked = id === 'liked', p = liked ? { id, name: 'Liked Songs', tracks: S.liked, cover: '/images/cover-liked-songs.jpg' } : getPl(id);
   if (!p) return notFound();
   const mine = !liked && !p.seed, ids = p.tracks.filter(tid => TR[tid]);
   const fq = playlistFilterQuery.trim().toLowerCase();
   const visibleIds = fq ? ids.filter(tid => { const t = TR[tid]; return (t.title + ' ' + (AR[t.artist]?.name || '') + ' ' + (AL[t.album]?.title || '')).toLowerCase().includes(fq); }) : ids;
-  const src = liked ? 'images/cover-liked-songs.jpg' : playlistArt(p, true);
+  const src = liked ? '/images/cover-liked-songs.jpg' : playlistArt(p, true);
   const subExtra = p.desc ? `<div style="margin-bottom:6px;color:rgba(255,255,255,.72)">${esc(p.desc)}</div>` : '';
   let h = hero({ id: p.id, type: 'Public Playlist', title: p.name, src, h: liked ? 265 : hash(p.name) % 360, sub: `${subExtra}<strong>${esc(liked ? S.name : p.seed ? 'JATHUFY' : S.name)}</strong> · ${plural(ids.length, 'song')}${ids.length ? ', ' + totalDur(ids) : ''}` });
   const uploadExtra = p.uploaded ? `<button class="pill outline sm" data-act="upload-songs">${icon('upload')} Upload more</button>` : '';
@@ -895,7 +947,7 @@ function vProfile() {
   const counts = {};
   S.recent.forEach(id => { const t = TR[id]; if (t) counts[t.artist] = (counts[t.artist] || 0) + 1; });
   const topA = Object.keys(counts).sort((a, b) => counts[b] - counts[a])[0];
-  let h = hero({ id: 'profile', type: 'Profile', title: S.name, h: 150, round: true, src: 'images/cover-liked-songs.jpg', sub: `${plural(S.playlists.length, 'public playlist')} · ${plural(S.followed.length, 'following')}` });
+  let h = hero({ id: 'profile', type: 'Profile', title: S.name, h: 150, round: true, src: '/images/cover-liked-songs.jpg', sub: `${plural(S.playlists.length, 'public playlist')} · ${plural(S.followed.length, 'following')}` });
   h += `<div class="pad body"><div class="actions"><button class="pill" data-act="edit-name">${icon('edit')} Edit name</button><button class="pill outline" data-act="upload-songs">${icon('upload')} Upload Audio</button></div>
     <div class="stats"><div><b>${S.plays}</b><span>Plays</span></div><div><b>${S.liked.length}</b><span>Liked songs</span></div><div><b>${tamilTrackIds.length}</b><span>Tamil 2026 tracks</span></div><div><b>${topA && AR[topA] ? esc(AR[topA].name) : '—'}</b><span>Top artist</span></div></div>`;
   h += S.playlists.length ? shelf('Public playlists', S.playlists.map(p => card('playlist', p)).join('')) : '';
@@ -989,8 +1041,9 @@ async function loadTamilChart() {
           cover
         });
       }
+      restorePendingQueueTrack();
       renderLibrary();
-      if (route().name === 'home' || route().name === 'playlist') renderView(false);
+      if (route().name === 'home' || route().name === 'playlist' || route().name === 'queue') renderView(false);
     }
   } catch (err) {
     console.warn('JATHUFY Tamil previews:', err);
@@ -1223,7 +1276,7 @@ document.addEventListener('click', async e => {
     case 'hist-fwd': history.forward(); break;
     case 'clear-history': S.recent = []; save(); renderView(false); toast('History cleared'); break;
     case 'edit-name': { const n = await modal({ title: 'Profile details', input: S.name }); if (n) { S.name = n; save(); updateAvatars(); renderLibrary(); renderView(false); } break; }
-    case 'reset-all': if (await modal({ title: 'Reset JATHUFY?', text: 'This clears playlists, likes, history and preferences from this browser.', confirm: 'Reset', danger: true })) { audio.pause(); try { localStorage.removeItem(KEY); } catch {} S = { ...defaults }; audio.removeAttribute('src'); setVolume(S.volume); renderPlayer(); renderLibrary(); location.hash = '#/home'; renderView(true); toast('JATHUFY was reset'); } break;
+    case 'reset-all': if (await modal({ title: 'Reset JATHUFY?', text: 'This clears playlists, likes, history and preferences from this browser.', confirm: 'Reset', danger: true })) { audio.pause(); try { localStorage.removeItem(KEY); } catch {} S = { ...defaults }; currentContextName = 'Now Playing'; playlistFilterQuery = ''; audio.removeAttribute('src'); audio.load(); setVolume(S.volume); updateAvatars(); renderPlayer(); renderLibrary(); renderHomeFilters(); location.hash = '#/home'; renderView(true); toast('JATHUFY was reset'); } break;
   }
 });
 
@@ -1284,7 +1337,7 @@ updateAvatars();
 document.body.classList.toggle('npv-closed', !S.npvOpen);
 document.body.classList.toggle('side-collapsed', !!S.sideCollapsed);
 setVolume(S.volume || 0.7);
-S.queue = S.queue.filter(id => TR[id]);
+S.queue = S.queue.filter(id => TR[id] || String(id).startsWith('tm_') || String(id).startsWith('up_'));
 if (S.qi >= S.queue.length) S.qi = S.queue.length - 1;
 if (S.qi >= 0 && cur() && !cur().external) { audio.src = cur().file || cur().previewUrl || ''; }
 renderPlayer();
