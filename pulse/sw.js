@@ -1,4 +1,4 @@
-const CACHE = 'jathufy-shell-v5';
+const CACHE = 'jathufy-shell-v6';
 const CORE = [
   '/',
   '/index.html',
@@ -6,7 +6,11 @@ const CORE = [
   '/js/data.js',
   '/js/app.js',
   '/manifest.webmanifest',
-  '/icon.svg',
+  '/assets/aistudio/favicon-96x96_e09a4bb2.png',
+  '/assets/aistudio/favicon_97cfe0e1.svg',
+  '/assets/aistudio/apple-touch-icon_6b362fe9.png',
+  '/assets/aistudio/web-app-manifest-192x192_c0d0e92c.png',
+  '/assets/aistudio/web-app-manifest-512x512_c1671e3a.png',
   '/assets/aistudio/jathufy-logo_fe498894.png',
   '/assets/aistudio/file_0000000019788211b937aaff901ce977_2b6a3659.png',
   '/images/album-night-signals.jpg',

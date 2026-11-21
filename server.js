@@ -1,4 +1,5 @@
 import express from 'express';
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -164,8 +165,71 @@ app.get('/api/tamil-songs', async (_req, res) => {
   }
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+const publicAssetsDir = path.join(__dirname, 'public', 'assets', 'aistudio');
+const indexTemplate = fs.readFileSync(path.join(publicDir, 'index.html'), 'utf8');
+
+function resolveSiteOrigin(req) {
+  const rawHost = String(req.headers['x-forwarded-host'] || req.get('host') || '')
+    .split(',')[0]
+    .trim();
+  if (rawHost) {
+    const isLocal = /^(localhost|127\.0\.0\.1)(:\d+)?$/i.test(rawHost);
+    const forwardedProto = String(req.headers['x-forwarded-proto'] || '').split(',')[0].trim();
+    const proto = isLocal ? (forwardedProto || req.protocol || 'http') : 'https';
+    return `${proto}://${rawHost}`;
+  }
+  const configured = String(process.env.APP_URL || '').trim().replace(/\/+$/, '');
+  return configured || `http://localhost:${PORT}`;
+}
+
+function sendIndexHtml(req, res) {
+  const origin = resolveSiteOrigin(req);
+  const html = indexTemplate.replaceAll('__SITE_ORIGIN__', origin);
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.send(html);
+}
+
+app.get(['/', '/index.html'], sendIndexHtml);
+
+app.get(['/manifest.webmanifest', '/site.webmanifest'], (_req, res) => {
+  res.type('application/manifest+json');
+  res.sendFile(path.join(publicDir, 'manifest.webmanifest'));
+});
+
+app.get('/favicon.svg', (_req, res) => {
+  res.type('image/svg+xml');
+  res.sendFile(path.join(publicAssetsDir, 'favicon_97cfe0e1.svg'));
+});
+
+app.get(['/favicon-96x96.png', '/favicon.ico'], (_req, res) => {
+  res.type('image/png');
+  res.sendFile(path.join(publicAssetsDir, 'favicon-96x96_e09a4bb2.png'));
+});
+
+app.get('/apple-touch-icon.png', (_req, res) => {
+  res.type('image/png');
+  res.sendFile(path.join(publicAssetsDir, 'apple-touch-icon_6b362fe9.png'));
+});
+
+app.get('/web-app-manifest-192x192.png', (_req, res) => {
+  res.type('image/png');
+  res.sendFile(path.join(publicAssetsDir, 'web-app-manifest-192x192_c0d0e92c.png'));
+});
+
+app.get('/web-app-manifest-512x512.png', (_req, res) => {
+  res.type('image/png');
+  res.sendFile(path.join(publicAssetsDir, 'web-app-manifest-512x512_c1671e3a.png'));
+});
+
+app.get('/og-image.png', (_req, res) => {
+  res.type('image/png');
+  res.sendFile(path.join(publicAssetsDir, 'file_0000000019788211b937aaff901ce977_2b6a3659.png'));
+});
+
+app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 app.use(express.static(publicDir, {
+  index: false,
   setHeaders(res, filePath) {
     if (filePath.endsWith('.webmanifest')) {
       res.type('application/manifest+json');
@@ -173,9 +237,7 @@ app.use(express.static(publicDir, {
   }
 }));
 
-app.get('*', (_req, res) => {
-  res.sendFile(path.join(publicDir, 'index.html'));
-});
+app.get('*', sendIndexHtml);
 
 app.listen(PORT, HOST, () => {
   console.log(`JATHUFY server listening on http://${HOST}:${PORT}`);
